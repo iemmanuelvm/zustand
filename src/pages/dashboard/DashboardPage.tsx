@@ -1,11 +1,15 @@
-import { IoAccessibilityOutline, IoHeartOutline, IoListOutline, IoLockClosedOutline, IoPawOutline } from 'react-icons/io5';
-import { WhiteCard } from '../../components';
-import { useBearStore } from '../../stores';
+import { IoAccessibilityOutline, IoHeartOutline, IoInformationOutline, IoListOutline, IoLockClosedOutline, IoPawOutline } from 'react-icons/io5';
+import { RequestInfo, WhiteCard } from '../../components';
+import { useAuthStore, useBearStore, useTaskStore } from '../../stores';
+import { usePersonStore } from '../../stores/person/person.store';
 
 export const Dashboard = () => {
 
-  const totalBears = useBearStore(state => state.computed.totalBears);
-
+  const totalBears = useBearStore(state => state.totalBears);
+  const firstName = usePersonStore(state => state.firstName);
+  const tasks = useTaskStore(state => state.tasks);
+  const taskCount = Object.keys(tasks).length;
+  const userName = useAuthStore(state => state.user?.fullName || 'No user');
 
   return (
     <>
@@ -18,21 +22,21 @@ export const Dashboard = () => {
         <WhiteCard centered>
           <IoPawOutline size={50} className="text-indigo-600" />
           <h2>Osos</h2>
-          <p>{totalBears}</p>
+          <p>{totalBears()}</p>
         </WhiteCard>
 
 
         <WhiteCard centered>
           <IoAccessibilityOutline size={50} className="text-indigo-600" />
           <h2>Persona</h2>
-          <p>Información</p>
+          <p>{firstName}</p>
         </WhiteCard>
 
 
         <WhiteCard centered>
           <IoListOutline size={50} className="text-indigo-600" />
           <h2>Tareas</h2>
-          <p>Información</p>
+          <p>{taskCount}</p>
         </WhiteCard>
 
 
@@ -46,7 +50,12 @@ export const Dashboard = () => {
         <WhiteCard centered>
           <IoLockClosedOutline size={50} className="text-indigo-600" />
           <h2>Auth</h2>
-          <p>Información</p>
+          <p>{userName}</p>
+        </WhiteCard>
+
+        <WhiteCard centered className='col-span-3'>
+          <IoInformationOutline size={50} className="text-indigo-600" />
+          <RequestInfo/>
         </WhiteCard>
 
 
